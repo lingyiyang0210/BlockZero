@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d838bb225836c846928eae7b9e89c41, type: 3}
-  m_Name: Shape7
+  m_Name: Shape15
   m_EditorClassIdentifier: 
   columns: 2
-  rows: 2
+  rows: 3
   board:
+  - column: 0001
+    _size: 2
   - column: 0101
     _size: 2
   - column: 0100
