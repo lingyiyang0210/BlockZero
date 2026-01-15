@@ -39,19 +39,21 @@ public class Grid : MonoBehaviour
 
     private void SpawnGridSquares()
     {
-        //0,1,2,3,4,
-        //5,6,7,8,9
         int squareIndex = 0;
 
         for (var row = 0; row < rows; row++)
         {
             for (var column = 0; column < columns; column++)
             {
-                _gridSquares.Add(Instantiate(gridSquare) as GameObject);
-                _gridSquares[_gridSquares.Count - 1].GetComponent<GridSquare>().SquareIndex = squareIndex;
-                _gridSquares[_gridSquares.Count - 1].transform.SetParent(this.transform);
-                _gridSquares[_gridSquares.Count - 1].transform.localScale = new Vector3(squareScale, squareScale, squareScale);
-                _gridSquares[_gridSquares.Count - 1].GetComponent<GridSquare>().SetImage(squareIndex % 2 == 0);
+                GameObject instance = Instantiate(gridSquare) as GameObject;
+                _gridSquares.Add(instance);
+
+                var gs = instance.GetComponent<GridSquare>();
+                gs.SquareIndex = squareIndex;
+                instance.transform.SetParent(this.transform);
+                instance.transform.localScale = new Vector3(squareScale, squareScale, squareScale);
+                gs.SetImage(squareIndex % 2 == 0);
+
                 squareIndex++;
             }
         }
@@ -109,33 +111,43 @@ public class Grid : MonoBehaviour
     private void CheckIfShapeCanBePlaced()
     {
         var squareIndexes = new List<int>();
-        foreach(var square in _gridSquares)
+        foreach (var square in _gridSquares)
         {
             var gridSquare = square.GetComponent<GridSquare>();
-
-            if(gridSquare.Selected && !gridSquare.SquareOccupied)
+            if (gridSquare.Selected && !gridSquare.SquareOccupied)
             {
                 squareIndexes.Add(gridSquare.SquareIndex);
                 gridSquare.Selected = false;
-                //gridSquare.ActivateSquare();
-            }   
+            }
         }
 
         var currentSelectedShape = shapeStorage.GetCurrentSelectedShape();
-        if(currentSelectedShape == null) 
-            return; //there is no selected shape
-        
-        if(currentSelectedShape.TotalSquareNumber == squareIndexes.Count)
+        if (currentSelectedShape == null) return;
+
+        if (currentSelectedShape.TotalSquareNumber == squareIndexes.Count)
         {
-            foreach(var squareIndex in squareIndexes)
+            foreach (var squareIndex in squareIndexes)
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnBoard();
             }
+
             currentSelectedShape.DeactivateShape();
+            currentSelectedShape.gameObject.SetActive(false);
+
+            int shapeLeft = 0;
+            foreach (var shape in shapeStorage.shapeList)
+            {
+                if (shape.gameObject.activeSelf) shapeLeft++;
+            }
+
+            if (shapeLeft == 0)
+            {
+                GameEvents.RequestNewShapes?.Invoke();
+            }
         }
         else
         {
-            GameEvents.MoveShapeToStartPosition();
+            GameEvents.MoveShapeToStartPosition?.Invoke();
         }
     }
 }
