@@ -12,7 +12,10 @@ public class ShapeData : ScriptableObject
         public bool[] column;
         [SerializeField] private int _size = 0;
 
-        public Row() { }
+        public Row()
+        {
+            
+        }
 
         public Row(int size)
         {
