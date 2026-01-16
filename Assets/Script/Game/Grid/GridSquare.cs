@@ -20,7 +20,6 @@ public class GridSquare : MonoBehaviour
         SquareOccupied = false;
     }
 
-    //temp function. remove it
     public bool CanWeUseThisSquare()
     {
         return hooverImage.gameObject.activeSelf;
@@ -46,41 +45,52 @@ public class GridSquare : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (SquareOccupied == false)
+        var shapeSquare = collision.GetComponent<ShapeSquare>();
+        if (shapeSquare != null)
         {
-            Selected = true;
-            hooverImage.gameObject.SetActive(true);
-        }
-        else if(collision.GetComponent<Shape>() != null)
-        {
-            collision.GetComponent<ShapeSquare>().SetOccupied();
+            if (SquareOccupied)
+            {
+                shapeSquare.SetOccupied();
+            }
+            else
+            {
+                Selected = true;
+                hooverImage.gameObject.SetActive(true);
+            }
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Selected = true;
-
-        if (SquareOccupied == false)
+        var shapeSquare = collision.GetComponent<ShapeSquare>();
+        if (shapeSquare != null)
         {
-            hooverImage.gameObject.SetActive(true);
-        }
-        else if (collision.GetComponent<Shape>() != null)
-        {
-            collision.GetComponent<ShapeSquare>().SetOccupied();
+            if (SquareOccupied)
+            {
+                shapeSquare.SetOccupied();
+            }
+            else
+            {
+                Selected = true;
+                hooverImage.gameObject.SetActive(true);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (SquareOccupied == false)
+        var shapeSquare = collision.GetComponent<ShapeSquare>();
+        if (shapeSquare != null)
         {
-            Selected = false;
-            hooverImage.gameObject.SetActive(false);
-        }
-        else if (collision.GetComponent<ShapeSquare>() != null)
-        {
-            collision.GetComponent<ShapeSquare>().UnSetOccupied();
+            if (SquareOccupied)
+            {
+                shapeSquare.UnSetOccupied();
+            }
+            else
+            {
+                Selected = false;
+                hooverImage.gameObject.SetActive(false);
+            }
         }
     }
 }

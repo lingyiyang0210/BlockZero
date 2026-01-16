@@ -14,12 +14,14 @@ public class ShapeSquare : MonoBehaviour
 
     public void DeactivateShape()
     {
+        occupiedImage.gameObject.SetActive(false);
         gameObject.GetComponent<BoxCollider2D>().enabled = false;
         gameObject.SetActive(false);
     }
 
     public void ActivateShape()
     {
+        occupiedImage.gameObject.SetActive(false);
         gameObject.GetComponent<BoxCollider2D>().enabled = true;
         gameObject.SetActive(true);
     }

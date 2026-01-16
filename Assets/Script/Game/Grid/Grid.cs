@@ -40,20 +40,17 @@ public class Grid : MonoBehaviour
     private void SpawnGridSquares()
     {
         int squareIndex = 0;
-
         for (var row = 0; row < rows; row++)
         {
             for (var column = 0; column < columns; column++)
             {
                 GameObject instance = Instantiate(gridSquare) as GameObject;
                 _gridSquares.Add(instance);
-
                 var gs = instance.GetComponent<GridSquare>();
                 gs.SquareIndex = squareIndex;
                 instance.transform.SetParent(this.transform);
                 instance.transform.localScale = new Vector3(squareScale, squareScale, squareScale);
                 gs.SetImage(squareIndex % 2 == 0);
-
                 squareIndex++;
             }
         }
@@ -63,12 +60,9 @@ public class Grid : MonoBehaviour
     {
         int columnNumber = 0;
         int rowNumber = 0;
-
         Vector2 squareGapNumber = Vector2.zero;
         bool rowMoved = false;
-
         RectTransform squareRect = _gridSquares[0].GetComponent<RectTransform>();
-
         _offset.x = squareRect.rect.width * squareRect.localScale.x + everySquareOffset;
         _offset.y = squareRect.rect.height * squareRect.localScale.y + everySquareOffset;
 
@@ -81,29 +75,21 @@ public class Grid : MonoBehaviour
                 squareGapNumber.x = 0;
                 rowMoved = false;
             }
-
             float posXOffset = _offset.x * columnNumber + squareGapNumber.x * squaresGap;
             float posYOffset = _offset.y * rowNumber + squareGapNumber.y * squaresGap;
-
             if (columnNumber > 0 && columnNumber % 3 == 0)
             {
                 squareGapNumber.x++;
                 posXOffset += squaresGap;
             }
-
             if (rowNumber > 0 && rowNumber % 3 == 0 && !rowMoved)
             {
                 squareGapNumber.y++;
                 posYOffset += squaresGap;
                 rowMoved = true;
             }
-
             RectTransform rect = square.GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(
-                startPosition.x + posXOffset,
-                startPosition.y - posYOffset
-            );
-
+            rect.anchoredPosition = new Vector2(startPosition.x + posXOffset, startPosition.y - posYOffset);
             columnNumber++;
         }
     }
@@ -117,7 +103,6 @@ public class Grid : MonoBehaviour
             if (gridSquare.Selected && !gridSquare.SquareOccupied)
             {
                 squareIndexes.Add(gridSquare.SquareIndex);
-                gridSquare.Selected = false;
             }
         }
 
@@ -130,16 +115,16 @@ public class Grid : MonoBehaviour
             {
                 _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnBoard();
             }
-
             currentSelectedShape.DeactivateShape();
             currentSelectedShape.gameObject.SetActive(false);
+            CheckIfAnyLineIsFull();
+            ResetGridSquares();
 
             int shapeLeft = 0;
             foreach (var shape in shapeStorage.shapeList)
             {
                 if (shape.gameObject.activeSelf) shapeLeft++;
             }
-
             if (shapeLeft == 0)
             {
                 GameEvents.RequestNewShapes?.Invoke();
@@ -148,6 +133,21 @@ public class Grid : MonoBehaviour
         else
         {
             GameEvents.MoveShapeToStartPosition?.Invoke();
+            ResetGridSquares();
         }
+    }
+
+    private void ResetGridSquares()
+    {
+        foreach (var square in _gridSquares)
+        {
+            var gs = square.GetComponent<GridSquare>();
+            gs.Selected = false;
+            gs.hooverImage.gameObject.SetActive(false);
+        }
+    }
+
+    private void CheckIfAnyLineIsFull()
+    {
     }
 }
