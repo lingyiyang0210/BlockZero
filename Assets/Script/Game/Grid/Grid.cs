@@ -16,6 +16,8 @@ public class Grid : MonoBehaviour
     private Vector2 _offset = Vector2.zero;
     private List<GameObject> _gridSquares = new List<GameObject>();
 
+    private LineIndicator _lineIndicator;
+
     private void OnEnable()
     {
         GameEvents.CheckIfShapeCanBePlaced += CheckIfShapeCanBePlaced;
@@ -28,6 +30,7 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
+        _lineIndicator = GetComponent<LineIndicator>();
         CreateGrid();
     }
 
@@ -50,7 +53,7 @@ public class Grid : MonoBehaviour
                 gs.SquareIndex = squareIndex;
                 instance.transform.SetParent(this.transform);
                 instance.transform.localScale = new Vector3(squareScale, squareScale, squareScale);
-                gs.SetImage(squareIndex % 2 == 0);
+                gs.SetImage(_lineIndicator.GetGridSquareIndex(squareIndex) % 2 == 0);
                 squareIndex++;
             }
         }
