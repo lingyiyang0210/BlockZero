@@ -179,14 +179,27 @@ public class Grid : MonoBehaviour
             lines.Add(data.ToArray());
         }
 
+        //squares
+        for(var square = 0; square < 9; square++)
+        {
+            List<int> data = new List<int>(9);
+            for(var index = 0; index < 9; index++)
+            {
+                data.Add(_lineIndicator.square_data[square, index]);
+            }
+
+            lines.Add(data.ToArray());
+        }
+
         var completedLines = CheckIfSquaresAreCompleted(lines);
 
         if(completedLines > 2)
         {
             //TODO:PLAY BONUS ANIMATION
         }
-        //TODO:ADD SCORES
 
+        var totalScores = 10 * completedLines;
+        GameEvents.AddScores(totalScores);
     }
 
     private int CheckIfSquaresAreCompleted(List<int[]> data)
