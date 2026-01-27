@@ -38,6 +38,17 @@ public class GridSquare : MonoBehaviour
         SquareOccupied = true;    
     }
 
+    public void Deactivate()
+    {
+        activeImage.gameObject.SetActive(false);   
+    }
+
+    public void ClearOccupied()
+    {
+        Selected = false;
+        SquareOccupied = false;   
+    }
+
     public void SetImage(bool setFirstImage)
     {
         normalImage.GetComponent<Image>().sprite = setFirstImage ? normalImages[1] : normalImages[0];

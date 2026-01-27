@@ -132,6 +132,8 @@ public class Grid : MonoBehaviour
             {
                 GameEvents.RequestNewShapes?.Invoke();
             }
+
+            CheckIfAnyLineIsCompleted();
         }
         else
         {
@@ -152,5 +154,88 @@ public class Grid : MonoBehaviour
 
     private void CheckIfAnyLineIsFull()
     {
+        
+    }
+
+    void CheckIfAnyLineIsCompleted()
+    {
+        List<int[]> lines = new List<int[]>();
+
+        //columns
+        foreach(var column in _lineIndicator.columnIndexes)
+        {
+            lines.Add(_lineIndicator.GetVerticalLine(column));
+        }
+
+        //rows
+        for(var row = 0; row < 9; row++)
+        {
+          List<int> data = new List<int>(9);
+          for(var index = 0; index < 9; index++)
+            {
+                data.Add(_lineIndicator.line_data[row, index]);
+            }
+
+            lines.Add(data.ToArray());
+        }
+
+        var completedLines = CheckIfSquaresAreCompleted(lines);
+
+        if(completedLines > 2)
+        {
+            //TODO:PLAY BONUS ANIMATION
+        }
+        //TODO:ADD SCORES
+
+    }
+
+    private int CheckIfSquaresAreCompleted(List<int[]> data)
+    {
+        List<int[]> completedLines = new List<int[]>();
+
+        var linesCompleted = 0;
+
+        foreach(var line in data)
+        {
+            var lineCompleted = true;
+            foreach(var squareIndex in line)
+            {
+                var comp = _gridSquares[squareIndex].GetComponent<GridSquare>();
+                if(comp.SquareOccupied == false)
+                {
+                    lineCompleted = false;
+                }  
+            }
+
+            if(lineCompleted)
+            {
+                completedLines.Add(line);
+            }
+        }
+
+        foreach(var line in completedLines)
+        {
+            var completed = false;
+
+            foreach(var squareIndex in line)
+            {
+                var comp = _gridSquares[squareIndex].GetComponent<GridSquare>();
+                comp.Deactivate();
+                completed = true;
+            }
+
+            foreach(var squareIndex in line)
+            {
+                var comp = _gridSquares[squareIndex].GetComponent<GridSquare>();
+                comp.ClearOccupied();
+            }
+
+            if(completed)
+            {
+                linesCompleted++;
+            }
+        }
+
+        return linesCompleted;
     }
 }
