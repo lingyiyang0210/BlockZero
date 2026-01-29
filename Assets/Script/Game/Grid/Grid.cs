@@ -244,7 +244,7 @@ public class Grid : MonoBehaviour
 
         if(validShapes == 0)
         {
-            Debug.Log("GAME OVER");
+            GameEvents.GameOver?.Invoke(false);
         }
     }
 
@@ -254,6 +254,7 @@ public class Grid : MonoBehaviour
         var shapeColumns = currentShapeData.columns;
         var shapeRows = currentShapeData.rows;
 
+        //All indexex of filled up squares
         List<int> originalShapeFilledUpSquares = new List<int>();
         var squareIndex = 0;
 
