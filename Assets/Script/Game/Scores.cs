@@ -15,7 +15,7 @@ public class Scores : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     private bool newBestScore_ = false;
-    private BestScoreData bestScore_ = new BestScoreData();
+    private BestScoreData bestScores_ = new BestScoreData();
     private int currentScores_;
 
     private string bestScoreKey_ = "bsdat";
@@ -30,9 +30,9 @@ public class Scores : MonoBehaviour
 
     private IEnumerator ReadDataFile()
     {
-        bestScore_ = BinaryDataStream.Read<BestScoreData>(bestScoreKey_);
+        bestScores_ = BinaryDataStream.Read<BestScoreData>(bestScoreKey_);
         yield return new WaitForEndOfFrame();
-        Debug.Log("Read Best Scores = " + bestScore_.score);
+        GameEvents.UpdateBestScoreBar(currentScores_, bestScores_.score);
     }
 
     void Start()
@@ -56,18 +56,21 @@ public class Scores : MonoBehaviour
 
     public void SaveBestScores(bool NewBestScores)
     {
-        BinaryDataStream.Save<BestScoreData>(bestScore_, bestScoreKey_);
+        BinaryDataStream.Save<BestScoreData>(bestScores_, bestScoreKey_);
     }
 
     private void AddScores(int scores)
     {
         currentScores_ += scores;
 
-        if (currentScores_ > bestScore_.score)
+        if (currentScores_ > bestScores_.score)
         {
             newBestScore_ = true;
-            bestScore_.score = currentScores_;
+            bestScores_.score = currentScores_;
+            SaveBestScores(true);
         }
+
+        GameEvents.UpdateBestScoreBar(currentScores_, bestScores_.score);
         UpdateScoreText();
     }
 
