@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8bdf7e7eb4baae49b2dd5b502ac3a92, type: 3}
+  m_Name: Active Square Texture Data
+  m_EditorClassIdentifier: 
+  tresholdVal: 100
+  activeSquareTextures: []
+  currentColor: 0
