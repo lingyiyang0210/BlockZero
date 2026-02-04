@@ -13,5 +13,25 @@ MonoBehaviour:
   m_Name: Active Square Texture Data
   m_EditorClassIdentifier: 
   tresholdVal: 100
-  activeSquareTextures: []
-  currentColor: 0
+  activeSquareTextures:
+  - texture: {fileID: 21300000, guid: 5b3a1c4f2d2e1f846a6e76cd2c5aa23b, type: 3}
+    squareColor: 1
+  - texture: {fileID: 21300000, guid: c2f38c4522c6cb2418e1e818cede3cdb, type: 3}
+    squareColor: 2
+  - texture: {fileID: 21300000, guid: e5064ab11d903d640a3f08b65fe22c08, type: 3}
+    squareColor: 3
+  - texture: {fileID: 21300000, guid: a78829c9f8116cf42b5f0fb1b09be313, type: 3}
+    squareColor: 4
+  - texture: {fileID: 21300000, guid: d4d464255adb8b3489f667a17e72b2a3, type: 3}
+    squareColor: 5
+  - texture: {fileID: 21300000, guid: 77d5df1666ec9af4eac2e164b4b087da, type: 3}
+    squareColor: 6
+  - texture: {fileID: 21300000, guid: 994cff2baf2ec4740a729c679b3716d6, type: 3}
+    squareColor: 7
+  - texture: {fileID: 21300000, guid: a4dd387ce6156d84786bddbd2663dedc, type: 3}
+    squareColor: 8
+  - texture: {fileID: 21300000, guid: a87daf7c2c8a4434c8d575f0954a5802, type: 3}
+    squareColor: 9
+  - texture: {fileID: 21300000, guid: dab7bb03307bf1f4aae63ff87a0a6dd1, type: 3}
+    squareColor: 10
+  currentColor: 1

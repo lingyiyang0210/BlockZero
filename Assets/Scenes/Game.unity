@@ -2247,6 +2247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0249765d02fc7f24b9a407b01b07504b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  squareTextureData: {fileID: 11400000, guid: e9e909e81494b7f4abf7ed66fed50e92, type: 2}
   scoreText: {fileID: 250056909}
 --- !u!224 &1835506383 stripped
 RectTransform:
