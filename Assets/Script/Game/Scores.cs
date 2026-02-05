@@ -79,9 +79,10 @@ public class Scores : MonoBehaviour
 
     private void UpdateSquareColor()
     {
-        if (currentScores_ >= squareTextureData.tresholdVal)
+        if (GameEvents.UpdateSquareColor != null && currentScores_ >= squareTextureData.tresholdVal)
         {
             squareTextureData.UpdateColors(currentScores_);
+            GameEvents.UpdateSquareColor(squareTextureData.currentColor);
         }
     }
 

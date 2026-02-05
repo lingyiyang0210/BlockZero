@@ -12,26 +12,37 @@ public class Grid : MonoBehaviour
     public Vector2 startPosition = new Vector2(0f, 0f);
     public float squareScale = 1f;
     public float everySquareOffset = 0f;
+    public SquareTextureData squareTextureData;
 
     private Vector2 _offset = Vector2.zero;
     private List<GameObject> _gridSquares = new List<GameObject>();
 
     private LineIndicator _lineIndicator;
 
+    private Config.SquareColor currentActiveSquareColor = Config.SquareColor.NotSet;
+
     private void OnEnable()
     {
         GameEvents.CheckIfShapeCanBePlaced += CheckIfShapeCanBePlaced;
+        GameEvents.UpdateSquareColor += OnUpdateSquareColor;
     }
 
     private void OnDisable()
     {
         GameEvents.CheckIfShapeCanBePlaced -= CheckIfShapeCanBePlaced;
+        GameEvents.UpdateSquareColor -= OnUpdateSquareColor;
     }
 
     void Start()
     {
         _lineIndicator = GetComponent<LineIndicator>();
         CreateGrid();
+        currentActiveSquareColor = squareTextureData.activeSquareTextures[0].squareColor;
+    }
+
+    private void OnUpdateSquareColor(Config.SquareColor color)
+    {
+        currentActiveSquareColor = color;
     }
 
     private void CreateGrid()
@@ -116,7 +127,7 @@ public class Grid : MonoBehaviour
         {
             foreach (var squareIndex in squareIndexes)
             {
-                _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnBoard();
+                _gridSquares[squareIndex].GetComponent<GridSquare>().PlaceShapeOnBoard(currentActiveSquareColor);
             }
             currentSelectedShape.DeactivateShape();
             currentSelectedShape.gameObject.SetActive(false);
