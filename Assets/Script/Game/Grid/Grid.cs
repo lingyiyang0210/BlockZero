@@ -167,11 +167,13 @@ public class Grid : MonoBehaviour
     {
         List<int[]> lines = new List<int[]>();
 
+        //columns
         foreach(var column in _lineIndicator.columnIndexes)
         {
             lines.Add(_lineIndicator.GetVerticalLine(column));
         }
 
+        //rows
         for(var row = 0; row < 9; row++)
         {
             List<int> data = new List<int>(9);
@@ -183,6 +185,7 @@ public class Grid : MonoBehaviour
             lines.Add(data.ToArray());
         }
 
+        //squares
         for(var square = 0; square < 9; square++)
         {
             List<int> data = new List<int>(9);
@@ -195,6 +198,11 @@ public class Grid : MonoBehaviour
         }
 
         var completedLines = CheckIfSquaresAreCompleted(lines);
+
+        if(completedLines >= 2)
+        {
+            GameEvents.ShowCongratulationWritings();
+        }
 
         var totalScores = 10 * completedLines;
         GameEvents.AddScores?.Invoke(totalScores);
