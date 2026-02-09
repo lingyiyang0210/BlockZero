@@ -28,8 +28,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     public void Awake()
     {
-        _shapeStartScale = this.GetComponent<RectTransform>().localScale;
         _transform = this.GetComponent<RectTransform>();
+        _shapeStartScale = _transform.localScale;
         _canvas = GetComponentInParent<Canvas>();
         _shapeDraggable = true;
         _originalPivot = _transform.pivot;
@@ -262,6 +262,11 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (_shapeDraggable == false) return;
+
+        _transform.SetAsLastSibling();
+        _transform.localScale = Vector3.one;
+
         Vector2 mousePos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             _canvas.transform as RectTransform,
@@ -274,6 +279,8 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (_shapeDraggable == false) return;
+
         Vector2 pos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             _canvas.transform as RectTransform,
@@ -286,13 +293,18 @@ public class Shape : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBe
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (_shapeDraggable == false) return;
         GameEvents.CheckIfShapeCanBePlaced?.Invoke();
     }
 
-    public void OnPointerDown(PointerEventData eventData) { }
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (_shapeDraggable == false) return;
+    }
 
     private void MoveShapeToStartPosition()
     {
+        _transform.localScale = _shapeStartScale;
         _transform.localPosition = _startPosition;
     }
 }
