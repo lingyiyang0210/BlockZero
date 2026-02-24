@@ -437,6 +437,7 @@ MonoBehaviour:
   - {fileID: 1835506384}
   - {fileID: 364162433}
   - {fileID: 1907823884}
+  squareTextureData: {fileID: 11400000, guid: e9e909e81494b7f4abf7ed66fed50e92, type: 2}
 --- !u!1 &77881221
 GameObject:
   m_ObjectHideFlags: 0
