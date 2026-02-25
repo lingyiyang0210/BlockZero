@@ -8,7 +8,7 @@ public class ShapeStorage : MonoBehaviour
     public List<Shape> shapeList;
     public SquareTextureData squareTextureData;
 
-    private Config.SquareColor _currentShapeColor;
+    public static Config.SquareColor CurrentColor;
 
     private void OnEnable()
     {
@@ -24,7 +24,8 @@ public class ShapeStorage : MonoBehaviour
 
     void Start()
     {
-        _currentShapeColor = squareTextureData.activeSquareTextures[0].squareColor;
+        squareTextureData.SetStartColor();
+        CurrentColor = squareTextureData.currentColor;
 
         foreach (var shape in shapeList)
         {
@@ -35,7 +36,7 @@ public class ShapeStorage : MonoBehaviour
 
     private void OnUpdateSquareColor(Config.SquareColor color)
     {
-        _currentShapeColor = color;
+        CurrentColor = color;
     }
 
     public Shape GetCurrentSelectedShape()
@@ -48,7 +49,7 @@ public class ShapeStorage : MonoBehaviour
         return null;
     }
 
-    private void RequestNewShapes()
+    public void RequestNewShapes()
     {
         foreach (var shape in shapeList)
         {
@@ -62,10 +63,11 @@ public class ShapeStorage : MonoBehaviour
 
     public void ResetStorage()
     {
-        Config.SquareColor initialColor = squareTextureData.activeSquareTextures[0].squareColor;
-        _currentShapeColor = initialColor;
+        squareTextureData.SetStartColor();
 
-        GameEvents.UpdateSquareColor?.Invoke(initialColor);
+        CurrentColor = squareTextureData.currentColor;
+
+        GameEvents.UpdateSquareColor?.Invoke(CurrentColor);
 
         RequestNewShapes();
     }

@@ -7,43 +7,39 @@ using UnityEngine;
 public class SquareTextureData : ScriptableObject
 {
     [System.Serializable]
-
     public class TextureData
     {
         public Sprite texture;
         public Config.SquareColor squareColor;
     }
 
+    [Header("Color Settings")]
+    public int defaultColorIndex = 0;
+
     public int tresholdVal = 10;
     private const int StartTresholdVal = 10;
     public List<TextureData> activeSquareTextures;
 
+    [HideInInspector]
     public Config.SquareColor currentColor;
     private Config.SquareColor _nextColor;
 
     public int GetCurrentColorIndex()
     {
-        var currentIndex = 0;
-
         for (int index = 0; index < activeSquareTextures.Count; index++)
         {
             if (activeSquareTextures[index].squareColor == currentColor)
-            {
-                currentIndex = index;
-            }
+                return index;
         }
-        return currentIndex;
+        return 0;
     }
 
     public void UpdateColors(int current_score)
     {
         currentColor = _nextColor;
-        var currentColorIndex = GetCurrentColorIndex();
+        var currentIndex = GetCurrentColorIndex();
 
-        if (currentColorIndex == activeSquareTextures.Count - 1)
-            _nextColor = activeSquareTextures[0].squareColor;
-        else
-            _nextColor = activeSquareTextures[currentColorIndex + 1].squareColor;
+        _nextColor = activeSquareTextures[(currentIndex + 1) % activeSquareTextures.Count].squareColor;
 
         tresholdVal = StartTresholdVal + current_score;
     }
@@ -51,13 +47,15 @@ public class SquareTextureData : ScriptableObject
     public void SetStartColor()
     {
         tresholdVal = StartTresholdVal;
-        currentColor = activeSquareTextures[0].squareColor;
-        _nextColor = activeSquareTextures[1].squareColor;
-    }
 
-    private void Awake()
-    {
-        SetStartColor();
+        if (activeSquareTextures != null && activeSquareTextures.Count > 0)
+        {
+            int safeIndex = Mathf.Clamp(defaultColorIndex, 0, activeSquareTextures.Count - 1);
+            int nextIndex = (safeIndex + 1) % activeSquareTextures.Count;
+
+            currentColor = activeSquareTextures[safeIndex].squareColor;
+            _nextColor = activeSquareTextures[nextIndex].squareColor;
+        }
     }
 
     private void OnEnable()
