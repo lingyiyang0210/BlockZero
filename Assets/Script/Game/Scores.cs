@@ -90,4 +90,18 @@ public class Scores : MonoBehaviour
     {
         scoreText.text = currentScores_.ToString();
     }
+
+    [ContextMenu("Clear High Score File")]
+    public void ClearHighScoreFile()
+    {
+        bestScores_ = new BestScoreData();
+        bestScores_.score = 0;
+
+        BinaryDataStream.Save<BestScoreData>(bestScores_, bestScoreKey_);
+
+        UpdateScoreText();
+        GameEvents.UpdateBestScoreBar?.Invoke(currentScores_, bestScores_.score);
+
+        Debug.Log("High Score has been reset and saved to file!");
+    }
 }

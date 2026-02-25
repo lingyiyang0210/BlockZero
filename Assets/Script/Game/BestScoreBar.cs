@@ -25,4 +25,16 @@ public class BestScoreBar : MonoBehaviour
         fillInImage.fillAmount = currentPercentage;
         bestScoreText.text = bestScore.ToString();
     }
+
+    [ContextMenu("Clear High Score")]
+    public void ClearHighScore()
+    {
+        PlayerPrefs.DeleteKey("BestScore");
+        PlayerPrefs.Save();
+
+        if (fillInImage != null) fillInImage.fillAmount = 0f;
+        if (bestScoreText != null) bestScoreText.text = "0";
+
+        Debug.Log("High Score Cleared via Inspector!");
+    }
 }
